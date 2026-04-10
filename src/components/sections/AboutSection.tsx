@@ -13,11 +13,11 @@ const expertiseStack = [
 export function AboutSection() {
   return (
     <section id="about" className="py-24 border-b border-ghost-100">
-      <div className="max-w-7xl mx-auto w-full px-8">
+      <div className="max-w-screen-2xl mx-auto w-full px-8 md:px-12">
         {/* Section title */}
-        <Heading as="h2" className="text-gold mb-20">
+        <h2 className="font-serif text-gold mb-20 text-4xl md:text-5xl lg:text-6xl leading-tight tracking-tight">
           About Me
-        </Heading>
+        </h2>
 
         {/* Two-column layout */}
         <div className="grid md:grid-cols-[1fr_1fr] gap-16 items-center">

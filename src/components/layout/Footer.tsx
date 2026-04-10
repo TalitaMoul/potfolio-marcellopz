@@ -1,7 +1,7 @@
 export function Footer() {
   return (
     <footer className="border-t border-ghost-100 py-10">
-      <div className="max-w-7xl mx-auto w-full px-8 flex flex-col md:flex-row items-start justify-between gap-10">
+      <div className="max-w-screen-2xl mx-auto w-full px-8 md:px-12 flex flex-col md:flex-row items-start justify-between gap-10">
         <span className="text-xs tracking-widest uppercase text-muted">
           © 2026 The Digital Archivist. Engineered with precision.
         </span>

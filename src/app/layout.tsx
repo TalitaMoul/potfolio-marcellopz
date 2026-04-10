@@ -4,7 +4,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Marcello — The Digital Archivist",
-  description: "Portfolio de Marcello, desenvolvedor e designer.",
+  description: "Portfolio of Marcello Pimentel Zanandrea, Front-End Developer specializing in React, TypeScript, and Next.js.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({

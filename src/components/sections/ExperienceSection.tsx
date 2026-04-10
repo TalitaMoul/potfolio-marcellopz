@@ -57,7 +57,7 @@ const experiences: ExperienceEntry[] = [
 export function ExperienceSection() {
   return (
     <section id="experience" className="py-24 border-b border-ghost-100">
-      <div className="max-w-7xl mx-auto w-full px-8">
+      <div className="max-w-screen-2xl mx-auto w-full px-8 md:px-12">
         {/* Section header */}
         <p className="text-xs tracking-[0.3em] uppercase text-gold mb-20">
           // Manifesto 02. Experience

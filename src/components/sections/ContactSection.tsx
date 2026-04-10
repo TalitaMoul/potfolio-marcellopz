@@ -5,7 +5,7 @@ import { ContactForm } from "@/components/contact/ContactForm";
 export function ContactSection() {
   return (
     <section id="contact" className="py-24">
-      <div className="max-w-7xl mx-auto w-full px-8">
+      <div className="max-w-screen-2xl mx-auto w-full px-8 md:px-12">
         <p className="text-xs tracking-[0.3em] uppercase text-gold mb-4">
           // Manifesto 03. Contact
         </p>
