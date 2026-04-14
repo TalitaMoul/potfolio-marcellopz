@@ -9,6 +9,10 @@ type ExperienceEntry = {
   context: string;
   description: string;
   tags: string[];
+  logo?: string;
+  logoAlt?: string;
+  logoHeight?: string;
+  featured?: string;
 };
 
 const experiences: ExperienceEntry[] = [
@@ -21,6 +25,9 @@ const experiences: ExperienceEntry[] = [
     description:
       "Engineered end-to-end type-safe front-end features for core administration tools using Next.js and tRPC, accelerating continuous release cycles in a fast-paced startup environment. Designed and deployed intuitive interfaces for the Customer Success and Admin portals with high autonomy.",
     tags: ["Next.js", "tRPC", "TypeScript"],
+    logo: "/img/ExpLogo/logo-bask.svg",
+    logoAlt: "BASK Health",
+    logoHeight: "h-8", // <-- Ajustado para h-8
   },
   {
     index: "02",
@@ -31,6 +38,10 @@ const experiences: ExperienceEntry[] = [
     description:
       "Engineered accessible, themeable React components using Styled Components for FloQast; contributed to the modernization of design systems across dozens of repositories. Partnered with a cross-functional team to deliver high-quality web experiences for MGM Resorts.",
     tags: ["React", "Styled Components", "Next.js", "Design Systems"],
+    logo: "/img/ExpLogo/logo-fullstack-labs.svg",
+    logoAlt: "FullStack Labs",
+    logoHeight: "h-5.5", // <-- Ajustado para h-5
+    featured: "MGM Resorts",
   },
   {
     index: "03",
@@ -41,6 +52,9 @@ const experiences: ExperienceEntry[] = [
     description:
       "Drove the front-end development of a cloud identity management platform using React and TypeScript. Directed the full-scale migration of a primary application from JavaScript to TypeScript, refactoring 150+ files to boost developer velocity.",
     tags: ["React", "TypeScript", "Cloud Architecture"],
+    logo: "/img/ExpLogo/logo-senhasegura.svg",
+    logoAlt: "senhasegura",
+    logoHeight: "h-12", // <-- Adicionado h-12
   },
   {
     index: "04",
@@ -51,6 +65,9 @@ const experiences: ExperienceEntry[] = [
     description:
       "Gained foundational backend experience contributing to projects using PHP and the Symfony framework.",
     tags: ["PHP", "Symfony", "Backend"],
+    logo: "/img/ExpLogo/logo-senhasegura.svg",
+    logoAlt: "senhasegura",
+    logoHeight: "h-12", // <-- Adicionado h-12
   },
 ];
 
@@ -75,9 +92,21 @@ export function ExperienceSection() {
                 <span className="text-[4rem] leading-none font-serif text-ghost-200 select-none">
                   {exp.index}
                 </span>
-                <Heading as="h3" className="font-serif text-foreground">
-                  {exp.company}
-                </Heading>
+                {exp.logo ? (
+                  <div className="flex items-center justify-start">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={exp.logo}
+                      alt={exp.logoAlt ?? exp.company}
+                      className={`${exp.logoHeight ?? "h-8"} w-auto object-contain object-left`}
+                      style={{ filter: "brightness(0) invert(1)" }}
+                    />
+                  </div>
+                ) : (
+                  <Heading as="h3" className="font-serif text-foreground">
+                    {exp.company}
+                  </Heading>
+                )}
                 <span className="text-xs tracking-widest uppercase text-gold">
                   {exp.period}
                 </span>
@@ -85,12 +114,22 @@ export function ExperienceSection() {
 
               {/* Right: role details */}
               <div className="flex flex-col gap-5">
-                <Heading as="h3" className="font-serif text-foreground leading-snug">
+                <Heading
+                  as="h3"
+                  className="font-serif text-foreground leading-snug"
+                >
                   {exp.role}
                 </Heading>
-                <span className="text-xs tracking-widest uppercase text-muted">
-                  {exp.context}
-                </span>
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="text-xs tracking-widest uppercase text-muted">
+                    {exp.context}
+                  </span>
+                  {exp.featured && (
+                    <span className="text-[10px] tracking-widest uppercase border border-gold/50 text-gold px-2 py-0.5">
+                      {exp.featured}
+                    </span>
+                  )}
+                </div>
                 <BodyText muted className="text-sm leading-relaxed">
                   {exp.description}
                 </BodyText>

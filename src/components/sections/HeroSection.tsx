@@ -54,7 +54,7 @@ export function HeroSection() {
           </BodyText>
 
           <div className="flex items-center gap-4">
-            <a href="#gallery">
+            <a href="#archive">
               <Button variant="ghost" className="border-gold text-gold hover:brightness-110">Explore Archive</Button>
             </a>
             <a href="#contact">

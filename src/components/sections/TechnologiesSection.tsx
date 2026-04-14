@@ -13,7 +13,7 @@ const techGroups: TechGroup[] = [
   },
   {
     label: "Frameworks & Libraries",
-    items: ["React.js", "Next.js", "Redux", "Zustand", "TanStack Query", "tRPC", "RTL", "Jest", "Node.js", "Tailwind CSS", "Styled Components"],
+    items: ["React.js", "Next.js", "Redux", "Zustand", "TanStack Query", "tRPC", "RTL", "Node.js", "Tailwind CSS"],
   },
   {
     label: "Tools & Platforms",

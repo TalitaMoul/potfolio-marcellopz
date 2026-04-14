@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import { Heading } from "@/components/ui/Heading";
 import { BodyText } from "@/components/ui/BodyText";
+import { Lightbox } from "@/components/ui/Lightbox";
 
 type Project = {
   id: string;
@@ -8,6 +12,8 @@ type Project = {
   description: string;
   tags: string[];
   placeholder: string;
+  images: string[];
+  graphic?: "freelance";
 };
 
 const projects: Project[] = [
@@ -19,17 +25,77 @@ const projects: Project[] = [
       "Developed a comprehensive web application for managing tabletop RPG campaigns using React, TypeScript, and Firebase, hosted on Vercel.",
     tags: ["React", "TypeScript", "Firebase", "Vercel"],
     placeholder: "RPG",
+    images: [
+      "/img/RPGManager/RPGManager-01.png",
+      "/img/RPGManager/RPGManager-02.png",
+      "/img/RPGManager/RPGManager-03.png",
+    ],
   },
   {
-    id: "league",
+    id: "lol",
     index: "02",
-    title: "League of Legends Match Customization & Analytics",
+    title: "League of Legends Analytics",
     description:
-      "Created a personalized platform for balancing custom matches and tracking player/team statistics. Automated manual processes for team balancing and calculation of win rates and performance metrics.",
+      "Created a personalized platform for balancing custom matches and tracking player/team statistics. Automated manual processes for team balancing and calculation of win rates.",
     tags: ["React", "Next.js", "Firebase", "Tailwind CSS"],
     placeholder: "LOL",
+    images: [
+      "/img/x5S3/x5S3-01.png",
+      "/img/x5S3/x5S3-02.png",
+      "/img/x5S3/x5S3-03.png",
+      "/img/x5S3/x5S3-04.png",
+      "/img/x5S3/x5S3-05.png",
+      "/img/x5S3/x5S3-06.png",
+      "/img/x5S3/x5S3-07.png",
+    ],
+  },
+  {
+    id: "client-solutions",
+    index: "03",
+    title: "Custom Client Solutions",
+    description:
+      "Architected and delivered tailored web applications for independent clients. Managed the end-to-end development lifecycle, from gathering complex requirements to deploying scalable, pixel-perfect interfaces that solve specific business needs.",
+    tags: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Freelance"],
+    placeholder: "Clients",
+    images: [],
+    graphic: "freelance",
   },
 ];
+
+function FreelanceGraphic() {
+  return (
+    <div className="relative aspect-video bg-ghost-100 border border-ghost-200 flex items-center justify-center overflow-hidden">
+      {/* Geometric decoration — mirrors About section style */}
+      <div className="absolute w-[85%] h-[120%] border border-gold/10 rotate-18" />
+      <div className="absolute w-[70%] h-[100%] border border-gold/15 rotate-[-7deg]" />
+      <div className="absolute w-[40%] h-[70%] border border-gold/20 rotate-[10deg]" />
+
+      {/* Center content */}
+      <div className="relative z-10 flex flex-col items-center gap-3 select-none">
+        <span className="font-serif text-gold text-[3.5rem] leading-none">
+          3+
+        </span>
+        <div className="w-8 h-px bg-gold/40" />
+        <div className="flex flex-col items-center gap-1">
+          <span className="text-[9px] tracking-[0.35em] uppercase text-muted">
+            Independent
+          </span>
+          <span className="text-[9px] tracking-[0.35em] uppercase text-gold/70">
+            Client Projects
+          </span>
+        </div>
+      </div>
+
+      {/* Corner labels */}
+      <span className="absolute top-4 left-5 text-[8px] tracking-[0.3em] uppercase text-muted/40">
+        Freelance
+      </span>
+      <span className="absolute bottom-4 right-5 text-[8px] tracking-[0.3em] uppercase text-muted/40">
+        2023 – 2025
+      </span>
+    </div>
+  );
+}
 
 function Tag({ label }: { label: string }) {
   return (
@@ -39,12 +105,51 @@ function Tag({ label }: { label: string }) {
   );
 }
 
-function ProjectImage({ placeholder }: { placeholder: string }) {
+function ProjectImage({
+  project,
+  onOpen,
+}: {
+  project: Project;
+  onOpen: () => void;
+}) {
+  const hasImages = project.images.length > 0;
+
+  if (!hasImages && project.graphic === "freelance") {
+    return <FreelanceGraphic />;
+  }
+
   return (
-    <div className="aspect-video border border-ghost-200 flex items-center justify-center">
-      <span className="font-serif italic text-muted/30 text-4xl">
-        {placeholder}
-      </span>
+    <div
+      className={`relative aspect-video bg-ghost-100/10 overflow-hidden ${hasImages ? "cursor-pointer group" : "border border-ghost-200 flex items-center justify-center"}`}
+      onClick={hasImages ? onOpen : undefined}
+      role={hasImages ? "button" : undefined}
+      tabIndex={hasImages ? 0 : undefined}
+      onKeyDown={
+        hasImages
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") onOpen();
+            }
+          : undefined
+      }
+      aria-label={hasImages ? `View gallery for ${project.title}` : undefined}
+    >
+      {hasImages ? (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={project.images[0]}
+            alt={project.title}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-100"
+          />
+          <div className="absolute bottom-4 right-4 bg-black/80 text-white text-[10px] px-3 py-1 uppercase tracking-widest border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity">
+            View Gallery ({project.images.length})
+          </div>
+        </>
+      ) : (
+        <span className="font-serif italic text-muted/30 text-4xl">
+          {project.placeholder}
+        </span>
+      )}
     </div>
   );
 }
@@ -71,17 +176,43 @@ function ProjectText({ project }: { project: Project }) {
 }
 
 export function ProjectsSection() {
+  const [lightbox, setLightbox] = useState<{
+    images: string[];
+    index: number;
+  } | null>(null);
+
+  const handleClose = () => setLightbox(null);
+  const handleNext = () =>
+    setLightbox((prev) =>
+      prev ? { ...prev, index: (prev.index + 1) % prev.images.length } : null,
+    );
+  const handlePrev = () =>
+    setLightbox((prev) =>
+      prev
+        ? {
+            ...prev,
+            index: (prev.index - 1 + prev.images.length) % prev.images.length,
+          }
+        : null,
+    );
+
   return (
-    <section id="gallery" className="py-24 border-b border-ghost-100">
+    <section id="archive" className="py-24 border-b border-ghost-100">
       <div className="max-w-screen-2xl mx-auto w-full px-8 md:px-12">
-        {/* Header */}
-        <p className="text-xs tracking-[0.3em] uppercase text-gold mb-6">
-          Curated Artifacts .001
-        </p>
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-4">
-          <h2 className="font-serif text-foreground text-[clamp(2.5rem,6vw,5rem)] leading-none tracking-tight">
-            Selected Works
-          </h2>
+        {/* Section header */}
+        <div className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
+          <div>
+            <p className="text-xs tracking-[0.3em] uppercase text-gold mb-4">
+              // Manifesto 03. Selected Works
+            </p>
+            <h2 className="font-serif text-foreground text-[clamp(2.5rem,6vw,5rem)] leading-none tracking-tight">
+              Selected Works
+            </h2>
+            <BodyText muted className="max-w-md mt-6 text-sm leading-relaxed">
+              An editorial documentation of technical craft, balancing
+              structured backends with the fluid artistry of React frontends.
+            </BodyText>
+          </div>
           <div className="flex flex-col gap-1 md:text-right md:pb-2">
             <span className="text-xs tracking-widest uppercase text-muted">
               Loc: Vitória - ES - Brazil
@@ -95,11 +226,6 @@ export function ProjectsSection() {
           </div>
         </div>
 
-        <BodyText muted className="max-w-lg mb-20 text-sm leading-relaxed">
-          An editorial documentation of technical craft, balancing structured
-          backends with the fluid artistry of React frontends.
-        </BodyText>
-
         {/* Z-pattern project list */}
         <div className="flex flex-col divide-y divide-ghost-100">
           {projects.map((project, i) => {
@@ -111,66 +237,41 @@ export function ProjectsSection() {
               >
                 {imageLeft ? (
                   <>
-                    <ProjectImage placeholder={project.placeholder} />
+                    <ProjectImage
+                      project={project}
+                      onOpen={() =>
+                        setLightbox({ images: project.images, index: 0 })
+                      }
+                    />
                     <ProjectText project={project} />
                   </>
                 ) : (
                   <>
                     <ProjectText project={project} />
-                    <ProjectImage placeholder={project.placeholder} />
+                    <ProjectImage
+                      project={project}
+                      onOpen={() =>
+                        setLightbox({ images: project.images, index: 0 })
+                      }
+                    />
                   </>
                 )}
               </div>
             );
           })}
         </div>
-
-        {/* Philosophy block */}
-        <div className="grid md:grid-cols-2 gap-16 items-center mt-24 pt-16 border-t border-ghost-100">
-          <div className="flex flex-col gap-6">
-            <Heading as="h2" className="font-serif italic text-foreground leading-tight">
-              The Philosophy of Precision Craft.
-            </Heading>
-            <BodyText muted className="text-sm leading-relaxed">
-              Technical architecture is more than just functional execution; it is
-              the curation of logical systems into a cohesive narrative. Every
-              line of code, like every typographic choice, contributes to the
-              integrity of the whole.
-            </BodyText>
-
-            <div className="border border-ghost-200 mt-4">
-              <div className="px-4 py-2 border-b border-ghost-200">
-                <span className="text-[10px] tracking-widest uppercase text-muted">
-                  Archive Status
-                </span>
-              </div>
-              {[
-                { key: "Core Systems", value: "Stable" },
-                { key: "Experimental Labs", value: "Active" },
-                { key: "Version", value: "V.01-2026" },
-              ].map((row) => (
-                <div
-                  key={row.key}
-                  className="px-4 py-3 flex justify-between border-b border-ghost-100 last:border-0"
-                >
-                  <span className="text-xs tracking-wide uppercase text-muted">
-                    {row.key}
-                  </span>
-                  <span className="text-xs tracking-widest uppercase text-foreground">
-                    {row.value}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="aspect-video border border-ghost-200 flex items-center justify-center">
-            <span className="font-serif italic text-muted/30 text-2xl text-center px-8">
-              Precision.<br />Craft.
-            </span>
-          </div>
-        </div>
       </div>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <Lightbox
+          images={lightbox.images}
+          currentIndex={lightbox.index}
+          onClose={handleClose}
+          onNext={handleNext}
+          onPrev={handlePrev}
+        />
+      )}
     </section>
   );
 }

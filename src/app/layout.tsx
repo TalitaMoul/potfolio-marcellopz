@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Marcello — The Digital Archivist",
   description: "Portfolio of Marcello Pimentel Zanandrea, Front-End Developer specializing in React, TypeScript, and Next.js.",
   icons: {
-    icon: "/favicon.svg",
+    icon: "/logo.svg",
   },
 };
 
