@@ -14,6 +14,8 @@ type Project = {
   placeholder: string;
   images: string[];
   graphic?: "freelance";
+  githubUrl?: string;
+  liveUrl?: string;
 };
 
 const projects: Project[] = [
@@ -30,6 +32,8 @@ const projects: Project[] = [
       "/img/RPGManager/RPGManager-02.png",
       "/img/RPGManager/RPGManager-03.png",
     ],
+    githubUrl: "https://github.com/marcellopz/rpg-manager",
+    liveUrl: "https://campaign-hub.vercel.app/",
   },
   {
     id: "lol",
@@ -48,6 +52,8 @@ const projects: Project[] = [
       "/img/x5S3/x5S3-06.png",
       "/img/x5S3/x5S3-07.png",
     ],
+    githubUrl: "https://github.com/marcellopz/x5-next",
+    liveUrl: "https://s2.x5dosnerds.com.br/",
   },
   {
     id: "client-solutions",
@@ -72,10 +78,6 @@ function FreelanceGraphic() {
 
       {/* Center content */}
       <div className="relative z-10 flex flex-col items-center gap-3 select-none">
-        <span className="font-serif text-gold text-[3.5rem] leading-none">
-          3+
-        </span>
-        <div className="w-8 h-px bg-gold/40" />
         <div className="flex flex-col items-center gap-1">
           <span className="text-[9px] tracking-[0.35em] uppercase text-muted">
             Independent
@@ -170,6 +172,30 @@ function ProjectText({ project }: { project: Project }) {
         {project.tags.map((t) => (
           <Tag key={t} label={t} />
         ))}
+      </div>
+
+      {/* LINKS DO PROJETO COM BORDER-B NO HOVER */}
+      <div className="flex gap-6 mt-4">
+        {project.githubUrl && (
+          <a
+            href={project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] tracking-widest uppercase text-muted hover:text-gold transition-all border-b border-transparent hover:border-gold/30 pb-1"
+          >
+            [ GitHub ]
+          </a>
+        )}
+        {project.liveUrl && (
+          <a
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] tracking-widest uppercase text-muted hover:text-gold transition-all border-b border-transparent hover:border-gold/30 pb-1"
+          >
+            [ Live Project ]
+          </a>
+        )}
       </div>
     </div>
   );

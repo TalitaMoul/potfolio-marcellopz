@@ -12,7 +12,7 @@ type ExperienceEntry = {
   logo?: string;
   logoAlt?: string;
   logoHeight?: string;
-  featured?: string;
+  clientLogos?: string[];
 };
 
 const experiences: ExperienceEntry[] = [
@@ -27,21 +27,24 @@ const experiences: ExperienceEntry[] = [
     tags: ["Next.js", "tRPC", "TypeScript"],
     logo: "/img/ExpLogo/logo-bask.svg",
     logoAlt: "BASK Health",
-    logoHeight: "h-8", // <-- Ajustado para h-8
+    logoHeight: "h-8",
   },
   {
     index: "02",
     company: "FullStack Labs",
-    period: "MAY 2025 – DEC 2025",
     role: "Software Engineer (Mid Level)",
-    context: "CLIENTS: FLOQAST · MGM RESORTS",
+    period: "DEC 2024 – PRESENT",
+    context: "SOFTWARE CONSULTANCY",
     description:
       "Engineered accessible, themeable React components using Styled Components for FloQast; contributed to the modernization of design systems across dozens of repositories. Partnered with a cross-functional team to deliver high-quality web experiences for MGM Resorts.",
     tags: ["React", "Styled Components", "Next.js", "Design Systems"],
     logo: "/img/ExpLogo/logo-fullstack-labs.svg",
     logoAlt: "FullStack Labs",
-    logoHeight: "h-5.5", // <-- Ajustado para h-5
-    featured: "MGM Resorts",
+    logoHeight: "h-6",
+    clientLogos: [
+      "/img/ExpLogo/logo_FloQast.png",
+      "/img/ExpLogo/logo_mgm.jpeg",
+    ],
   },
   {
     index: "03",
@@ -54,7 +57,7 @@ const experiences: ExperienceEntry[] = [
     tags: ["React", "TypeScript", "Cloud Architecture"],
     logo: "/img/ExpLogo/logo-senhasegura.svg",
     logoAlt: "senhasegura",
-    logoHeight: "h-12", // <-- Adicionado h-12
+    logoHeight: "h-12",
   },
   {
     index: "04",
@@ -67,7 +70,7 @@ const experiences: ExperienceEntry[] = [
     tags: ["PHP", "Symfony", "Backend"],
     logo: "/img/ExpLogo/logo-senhasegura.svg",
     logoAlt: "senhasegura",
-    logoHeight: "h-12", // <-- Adicionado h-12
+    logoHeight: "h-12",
   },
 ];
 
@@ -75,19 +78,17 @@ export function ExperienceSection() {
   return (
     <section id="experience" className="py-24 border-b border-ghost-100">
       <div className="max-w-screen-2xl mx-auto w-full px-8 md:px-12">
-        {/* Section header */}
         <p className="text-xs tracking-[0.3em] uppercase text-gold mb-20">
           // Manifesto 02. Experience
         </p>
 
-        {/* Experience entries */}
         <div className="flex flex-col gap-24">
           {experiences.map((exp) => (
             <div
               key={exp.index}
               className="grid md:grid-cols-[2fr_5fr] gap-8 items-start"
             >
-              {/* Left: company info */}
+              {/* Coluna da Esquerda: Empresa e Logo */}
               <div className="flex flex-col gap-3">
                 <span className="text-[4rem] leading-none font-serif text-ghost-200 select-none">
                   {exp.index}
@@ -112,7 +113,6 @@ export function ExperienceSection() {
                 </span>
               </div>
 
-              {/* Right: role details */}
               <div className="flex flex-col gap-5">
                 <Heading
                   as="h3"
@@ -124,15 +124,12 @@ export function ExperienceSection() {
                   <span className="text-xs tracking-widest uppercase text-muted">
                     {exp.context}
                   </span>
-                  {exp.featured && (
-                    <span className="text-[10px] tracking-widest uppercase border border-gold/50 text-gold px-2 py-0.5">
-                      {exp.featured}
-                    </span>
-                  )}
                 </div>
                 <BodyText muted className="text-sm leading-relaxed">
                   {exp.description}
                 </BodyText>
+
+                {/* Tags de Tecnologia */}
                 <div className="flex flex-wrap gap-2 pt-2">
                   {exp.tags.map((tag) => (
                     <span
@@ -143,6 +140,31 @@ export function ExperienceSection() {
                     </span>
                   ))}
                 </div>
+
+                {/* SEÇÃO DE LOGOS DOS CLIENTES - EQUILÍBRIO ÓPTICO FORÇADO */}
+                {exp.clientLogos && exp.clientLogos.length > 0 && (
+                  <div className="flex flex-col gap-6 mt-10 border-t border-white/5 pt-8">
+                    <span className="text-[9px] tracking-[0.3em] text-gold/50 uppercase font-sans">
+                      Main Clients
+                    </span>
+                    <div className="flex items-center gap-12">
+                      {exp.clientLogos.map((src) => {
+                        const isMGM = src.toLowerCase().includes("mgm");
+                        return (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            key={src}
+                            src={src}
+                            alt="Client Logo"
+                            className={`${
+                              isMGM ? "h-28 scale-150 origin-left" : "h-12"
+                            } w-auto object-contain brightness-0 invert opacity-50 hover:opacity-100 transition-all duration-300`}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}
